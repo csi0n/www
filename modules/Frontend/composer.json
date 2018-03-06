@@ -1,0 +1,25 @@
+{
+    "name": "csi0n/frontend",
+    "description": "",
+    "authors": [
+        {
+            "name": "csi0n",
+            "email": "chqssqll@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Frontend\\Providers\\FrontendServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Frontend\\": ""
+        }
+    }
+}
