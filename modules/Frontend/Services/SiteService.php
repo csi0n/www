@@ -9,7 +9,23 @@
 namespace Modules\Frontend\Services;
 
 
+use Modules\Frontend\Repositories\SiteRepository;
+
 class SiteService
 {
+    protected $siteRepository;
 
+    /**
+     * SiteService constructor.
+     * @param $siteRepository
+     */
+    public function __construct(SiteRepository $siteRepository)
+    {
+        $this->siteRepository = $siteRepository;
+    }
+
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array([$this->siteRepository, $name], $arguments);
+    }
 }

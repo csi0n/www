@@ -8,6 +8,14 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import "~mapbox-gl/dist/mapbox-gl.css";
+
+@import "~antd/dist/antd.min.css";
+
+html,body,#app,#map{
+  height: 100%;
+  width: 100%;
+}
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

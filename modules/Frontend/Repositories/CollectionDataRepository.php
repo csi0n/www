@@ -9,7 +9,25 @@
 namespace Modules\Frontend\Repositories;
 
 
-class CollectionDataRepository
-{
+use Modules\Frontend\Entities\CollectionData;
 
+class CollectionDataRepository extends Repository
+{
+    protected $model = CollectionData::class;
+
+    public function todayByDeviceID($deviceId)
+    {
+        return $this->getModel()
+            ->whereDate('CollectionDateTime', '2014-05-02')
+            ->where('DeviceID', $deviceId)
+            ->get();
+    }
+
+    public function byDateArea($start, $end, $deviceId)
+    {
+        return $this->getModel()
+            ->whereBetween('CollectionDateTime', [$start, $end])
+            ->where('DeviceID', $deviceId)
+            ->get();
+    }
 }

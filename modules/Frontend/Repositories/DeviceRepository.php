@@ -9,7 +9,9 @@
 namespace Modules\Frontend\Repositories;
 
 
-class DeviceRepository
-{
+use Modules\Frontend\Entities\Device;
 
+class DeviceRepository extends Repository
+{
+    protected $model = Device::class;
 }

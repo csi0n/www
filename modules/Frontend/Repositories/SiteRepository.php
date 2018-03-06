@@ -9,7 +9,16 @@
 namespace Modules\Frontend\Repositories;
 
 
-class SiteRepository
-{
+use Modules\Frontend\Entities\Site;
 
+class SiteRepository extends Repository
+{
+    protected $model = Site::class;
+
+    public function loadById(array $id)
+    {
+        return $this->getModel()
+            ->whereIn('id', $id)
+            ->get();
+    }
 }

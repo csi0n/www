@@ -9,7 +9,16 @@
 namespace Modules\Frontend\Transformers;
 
 
-class RealTimeDataCurveTransform
-{
+use Illuminate\Http\Resources\Json\Resource;
+use Modules\Frontend\Services\CollectionDataService;
 
+class RealTimeDataCurveTransform extends Resource
+{
+    public function toArray($request)
+    {
+        return array_merge([
+            'today' => app(CollectionDataService::class)->todayByDeviceID($this->device_id)
+        ], parent::toArray($request)
+        );
+    }
 }

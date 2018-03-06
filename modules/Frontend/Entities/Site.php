@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
 {
-    protected $fillable = [];
+    protected $fillable = [
+        'name',
+        'longitude',
+        'latitude',
+        'device_id'
+    ];
 }

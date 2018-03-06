@@ -5,68 +5,49 @@ namespace Modules\Frontend\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Frontend\Http\Requests\CollectionByDateAreaRequest;
+use Modules\Frontend\Http\Requests\LoadTodayCollectionDataRequest;
+use Modules\Frontend\Services\SiteService;
+use Modules\Frontend\Transformers\RealTimeDataCurveTransform;
+use Modules\Frontend\Transformers\SiteCollectionDateTransformer;
+use Modules\Frontend\Transformers\SiteTransformer;
 
 class SiteController extends Controller
 {
+    protected $siteService;
+
+    /**
+     * SiteController constructor.
+     * @param $siteService
+     */
+    public function __construct(SiteService $siteService)
+    {
+        $this->siteService = $siteService;
+    }
+
     /**
      * Display a listing of the resource.
      * @return Response
      */
     public function index()
     {
-        return view('frontend::index');
+        ini_set('memory_limit', '2048M');
+        return SiteTransformer::collection(
+            $this->siteService->get()
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
+    public function loadTodayCollectionData(LoadTodayCollectionDataRequest $request)
     {
-        return view('frontend::create');
+        return RealTimeDataCurveTransform::collection(
+            $this->siteService->loadById($request->ids)
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function store(Request $request)
+    public function loadCollectionByDateArea(CollectionByDateAreaRequest $request)
     {
-    }
-
-    /**
-     * Show the specified resource.
-     * @return Response
-     */
-    public function show()
-    {
-        return view('frontend::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @return Response
-     */
-    public function edit()
-    {
-        return view('frontend::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function update(Request $request)
-    {
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function destroy()
-    {
+        return SiteCollectionDateTransformer::collection(
+            $this->siteService->loadById($request->ids)
+        );
     }
 }

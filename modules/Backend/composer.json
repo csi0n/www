@@ -1,0 +1,25 @@
+{
+    "name": "csi0n/backend",
+    "description": "",
+    "authors": [
+        {
+            "name": "csi0n",
+            "email": "chqssqll@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Backend\\Providers\\BackendServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Backend\\": ""
+        }
+    }
+}

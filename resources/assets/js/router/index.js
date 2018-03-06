@@ -1,47 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {Switch, Route, Redirect, routerRedux} from 'dva/router'
-import dynamic from 'dva/dynamic'
+import {Router, Switch, Route} from 'react-router-dom'
+import createBrowserHistory from 'history/createBrowserHistory'
+import routes from './routes'
 
-const {ConnectedRouter} = routerRedux
+const history = createBrowserHistory()
 
-const Routers = function ({history, app}) {
-    const error404 = dynamic({
-        app,
-        component: () => import('./../pages/errors/404')
-    })
-    const routes = [
-        {
-            path: '/home',
-            models: () => [import('./')],
-            component: () => import('./../pages/home')
-        }
-    ]
-
-    return (
-        <ConnectedRouter history={history}>
-            <Switch>
-                <Route exact path="/" render={() => (<Redirect to="/home"/>)}/>
-                {
-                    routes.map(({path, ...dynamic}, key) => (
-                        <Route key={key}
-                               exact
-                               path={path}
-                               component={dynamic({
-                                   app,
-                                   ...dynamic,
-                               })}
-                        />
-                    ))
-                }
-                <Route component={error404}/>
-            </Switch>
-        </ConnectedRouter>
-    )
-}
-
-Routers.propTypes = {
-    history: PropTypes.object,
-    app: PropTypes.object
-};
+const Routers = () => (
+    <Router history={history}>
+        <Switch>
+            {routes.map((route, i) => {
+                return <Route key={i} {...route}/>
+            })}
+        </Switch>
+    </Router>
+)
 export default Routers
