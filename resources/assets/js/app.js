@@ -19,6 +19,27 @@ import {Provider} from 'react-redux'
 import store from './store'
 import Routes from './router'
 
+if (!Array.prototype.equals) {
+  let _=require('lodash')
+  Array.prototype.equals=function(array){
+    if (!array) {
+      return false
+    }
+    if (this.length != array.length) {
+      return false
+    }
+    this.map((thisArr)=>{
+      let currentArr=_.findIndex(array,(arr)=>{
+        return thisArr.id==arr.id
+      })
+      if (!currentArr) {
+        return false
+      }
+    })
+    return true
+  }
+}
+
 render((<Provider store={store}>
         <Routes/>
     </Provider>), document.getElementById('app')

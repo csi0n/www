@@ -22,16 +22,16 @@ import {render} from 'react-dom'
     init(){
       const menu=(
         <Menu onClick={this._config.callback.menuClick}>
-          <Menu.Item key="1">实时数据曲线</Menu.Item>
-          <Menu.Item key="2">叠加实时数据曲线</Menu.Item>
+          <Menu.Item key="1"><Icon type="area-chart" /> 实时数据曲线</Menu.Item>
+          <Menu.Item key="2"><Icon type="bar-chart" /> 叠加实时数据曲线</Menu.Item>
         </Menu>
       )
 
       render(
         <div>
           <Dropdown overlay={menu}>
-            <Button type="primary">
-              操作<Icon type="down" />
+            <Button>
+              <Icon type="bars" />
             </Button>
           </Dropdown>
         </div>,

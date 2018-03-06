@@ -6,7 +6,8 @@ import {
 
 const initialState = {
   sites:[],
-  todayCollectionData:[]
+  todayCollectionData:[],
+  overlayRealTimeCollectionData:[]
 }
 const reducer = (state = initialState, {type, payload = null}) => {
     switch (type) {

@@ -111,7 +111,6 @@ class OverlayRealTimeDataCurve extends Component{
         series:series,
         xAxisData:xAxisData
       })
-
     }
   }
   handleSiteSelectChange(sites){
@@ -127,8 +126,8 @@ class OverlayRealTimeDataCurve extends Component{
   }
   handleTime(value){
     this.setState({
-      start:value[0],
-      end:value[1]
+      start:value[0].format('YYYY-MM-DD'),
+      end:value[1].format('YYYY-MM-DD')
     })
   }
   render(){

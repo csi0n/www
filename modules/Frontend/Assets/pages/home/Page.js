@@ -19,22 +19,23 @@ class Page extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-      console.log(nextProps);
       if (nextProps.sites) {
-        const { sites } = nextProps
-        let { map } = this.mapbox;
-        _.map(sites,(site)=>{
-          let id=`site-${site.id}`,
-          popup = new mapboxGl.Popup({closeOnClick:false})
-          .setLngLat([site.latitude,site.longitude])
-          .setHTML(`<div style="width:150px" id="${id}"></div>`)
-          .addTo(map)
+        if (!this.props.sites.equals(nextProps.sites)) {
+          const { sites } = nextProps
+          let { map } = this.mapbox;
+          _.map(sites,(site)=>{
+            let id=`site-${site.id}`,
+            popup = new mapboxGl.Popup({closeOnClick:false})
+            .setLngLat([site.latitude,site.longitude])
+            .setHTML(`<div style="width:150px" id="${id}"></div>`)
+            .addTo(map)
 
-          ReactDom.render(
-            <SitePopupItem site={site} />,
-            document.getElementById(id)
-          )
-        })
+            ReactDom.render(
+              <SitePopupItem site={site} />,
+              document.getElementById(id)
+            )
+          })
+        }
       }
     }
     componentDidMount(){
@@ -58,8 +59,8 @@ class Page extends Component {
       })
       map.addControl(homeMenuControl)
       homeMenuControl.init()
-      map.addControl(new mapboxGl.NavigationControl())
-      map.addControl(new mapboxGl.FullscreenControl())
+      map.addControl(new mapboxGl.NavigationControl(),'top-left')
+      map.addControl(new mapboxGl.FullscreenControl(),'top-left')
       const {dispatch}=this.props;
       this.mapbox={
         map:map

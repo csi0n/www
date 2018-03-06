@@ -108,6 +108,7 @@ class RealTimeDataCurve extends Component{
         xAxisData:xAxisData
       })
 
+
     }
   }
   handleSiteSelectChange(sites){

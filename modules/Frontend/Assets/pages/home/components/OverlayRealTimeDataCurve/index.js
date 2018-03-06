@@ -3,7 +3,7 @@ import OverlayRealTimeDataCurve from './OverlayRealTimeDataCurve'
 import CollectionByDateArea from './../../../../models/collectionByDateArea';
 let _=require('lodash')
 const mapStateToProps = state => {
-  const data=state.frontend.todayCollectionData
+  const data=state.frontend.overlayRealTimeCollectionData
     return {
       overlayRealTimeCollectionData:!_.isEqual(data,{})?
       _.map(data,(collectionData)=>new CollectionByDateArea(collectionData)):
