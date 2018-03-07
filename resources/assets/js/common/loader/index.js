@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
+import {Spin} from 'antd'
 // set display name for component
 const displayName = 'CommonLoader'
 
@@ -13,7 +13,8 @@ const propTypes = {
 const LoadingComponent = ({isLoading, error}) => {
     // Handle the loading state
     if (isLoading) {
-        return <div>Loading...</div>
+        // return <div>Loading...</div>
+        return <Spin size='large' spinning={true} style={{width:'100%',height:'100%'}}></Spin>
     }
     // Handle the error state
     else if (error) {

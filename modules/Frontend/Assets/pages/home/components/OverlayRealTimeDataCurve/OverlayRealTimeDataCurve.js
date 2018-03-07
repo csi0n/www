@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal,Row,Col,Button,DatePicker,Select,Form} from 'antd'
+import {Modal,Row,Col,Button,DatePicker,Select,Form,Spin} from 'antd'
 const FormItem = Form.Item
 import SiteSelect from './../SiteSelect'
 import CollectionType from './../CollectionType'
@@ -19,7 +19,8 @@ class OverlayRealTimeDataCurve extends Component{
     this.state={
       visible:false,
       sites:[],
-      type:null
+      type:null,
+      loading:false
     }
 
   }
@@ -29,6 +30,9 @@ class OverlayRealTimeDataCurve extends Component{
     })
   }
   submit(){
+    this.setState({
+      loading:true
+    })
     this.props.dispatch(collectionDataByDateAreaRequest({
       ids:this.state.sites,
       start:this.state.start,
@@ -45,6 +49,13 @@ class OverlayRealTimeDataCurve extends Component{
     this.setState({
       type:type
     })
+  }
+  componentWillReceiveProps(nextProps){
+    if (nextProps.overlayRealTimeCollectionData) {
+      this.setState({
+        loading:false
+      })
+    }
   }
   handleBaseType(type){
     this.setState({
@@ -138,29 +149,31 @@ class OverlayRealTimeDataCurve extends Component{
         okText="确认"
         cancelText="取消"
       >
-                <SiteSelect handleSiteSelectChange={(e)=>this.handleSiteSelectChange(e)}></SiteSelect>
+            <Spin spinning={this.state.loading}>
+              <SiteSelect handleSiteSelectChange={(e)=>this.handleSiteSelectChange(e)}></SiteSelect>
 
-                <CollectionType handleCollectionTypeChange={(e)=>this.handleCollectionTypeChange(e.target.value)}></CollectionType>
+              <CollectionType handleCollectionTypeChange={(e)=>this.handleCollectionTypeChange(e.target.value)}></CollectionType>
 
-                <Select defaultValue="water" onChange={(e)=>this.handleBaseType(e)}>
-                  <Select.Option value="water">水</Select.Option>
-                  <Select.Option value="turbidity">浊度</Select.Option>
-                  <Select.Option value="temperature">温度</Select.Option>
-                  <Select.Option value="conductivity">导电率</Select.Option>
-                  <Select.Option value="salinity">盐度</Select.Option>
-                  <Select.Option value="electricity">电</Select.Option>
-                </Select>
+              <Select defaultValue="water" onChange={(e)=>this.handleBaseType(e)}>
+                <Select.Option value="water">水</Select.Option>
+                <Select.Option value="turbidity">浊度</Select.Option>
+                <Select.Option value="temperature">温度</Select.Option>
+                <Select.Option value="conductivity">导电率</Select.Option>
+                <Select.Option value="salinity">盐度</Select.Option>
+                <Select.Option value="electricity">电</Select.Option>
+              </Select>
 
-                <DatePicker.RangePicker
-                  showTime={{ format: 'HH:mm' }}
-                  format="YYYY-MM-DD HH:mm"
-                  placeholder={['开始时间', '结束时间']}
-                  onOk={(value)=>this.handleTime(value)}
-                />
+              <DatePicker.RangePicker
+                showTime={{ format: 'HH:mm' }}
+                format="YYYY-MM-DD HH:mm"
+                placeholder={['开始时间', '结束时间']}
+                onOk={(value)=>this.handleTime(value)}
+              />
 
-             <Button onClick={()=>this.submit()} shape="circle" icon="search" />
+              <Button onClick={()=>this.submit()} shape="circle" icon="search" />
 
-        {this.renderEchart()}
+              {this.renderEchart()}
+            </Spin>
       </Modal>
     )
   }

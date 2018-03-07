@@ -15,7 +15,7 @@ const mapStateToProps = state => {
         center:[121.180740356445, 31.753118515015],
         zoom:9
       },
-      cycleTime:30
+      cycleTime:10
     }
 }
 export default connect(mapStateToProps)(Page)

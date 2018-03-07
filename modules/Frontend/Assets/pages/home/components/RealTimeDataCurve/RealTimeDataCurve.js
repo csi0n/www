@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal,Row,Col,Button} from 'antd'
+import {Modal,Row,Col,Button,Spin} from 'antd'
 import SiteSelect from './../SiteSelect'
 import CollectionType from './../CollectionType'
 import PropTypes from 'prop-types'
@@ -18,7 +18,8 @@ class RealTimeDataCurve extends Component{
     this.state={
       visible:false,
       sites:[],
-      type:null
+      type:null,
+      loading:false
     }
 
   }
@@ -78,6 +79,9 @@ class RealTimeDataCurve extends Component{
       }
   }
   submit(){
+    this.setState({
+      loading:true
+    })
     this.props.dispatch(loadTodayCollectionDataRequest({ids:this.state.sites}))
   }
   componentWillReceiveProps(nextProps){
@@ -105,7 +109,8 @@ class RealTimeDataCurve extends Component{
       this.setState({
         legendData:legendData,
         series:series,
-        xAxisData:xAxisData
+        xAxisData:xAxisData,
+        loading:false
       })
 
 
@@ -124,29 +129,33 @@ class RealTimeDataCurve extends Component{
   }
   render(){
     return (
-      <Modal
-        title="实时数据曲线"
-        style={{top:20}}
-        width={'80%'}
-        visible={this.state.visible}
-        onOk={()=>this.toggleVisible()}
-        onCancel={()=>this.toggleVisible()}
-        okText="确认"
-        cancelText="取消"
-      >
-      <Row>
-        <Col span={4}>
-          <SiteSelect handleSiteSelectChange={(e)=>this.handleSiteSelectChange(e)}></SiteSelect>
-        </Col>
-        <Col span={18} offset={1}>
-          <CollectionType handleCollectionTypeChange={(e)=>this.handleCollectionTypeChange(e.target.value)}></CollectionType>
-        </Col>
-        <Col span={1}>
-         <Button onClick={()=>this.submit()} shape="circle" icon="search" />
-        </Col>
-      </Row>
-      <ReactEcharts style={{marginTop:'20px'}} option={this.getOption()} />
-      </Modal>
+
+        <Modal
+          title="实时数据曲线"
+          style={{top:20}}
+          width={'80%'}
+          visible={this.state.visible}
+          onOk={()=>this.toggleVisible()}
+          onCancel={()=>this.toggleVisible()}
+          okText="确认"
+          cancelText="取消"
+        >
+        <Spin spinning={this.state.loading}>
+          <Row>
+            <Col span={4}>
+              <SiteSelect handleSiteSelectChange={(e)=>this.handleSiteSelectChange(e)}></SiteSelect>
+            </Col>
+            <Col span={18} offset={1}>
+              <CollectionType handleCollectionTypeChange={(e)=>this.handleCollectionTypeChange(e.target.value)}></CollectionType>
+            </Col>
+            <Col span={1}>
+             <Button onClick={()=>this.submit()} shape="circle" icon="search" />
+            </Col>
+          </Row>
+          <ReactEcharts style={{marginTop:'20px'}} option={this.getOption()} />
+        </Spin>
+        </Modal>
+
     )
   }
 }

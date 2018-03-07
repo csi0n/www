@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import {siteListRequest} from '../../service'
+import { Spin} from 'antd';
 import {HomeMenuControl} from '../../controls'
 import RealTimeDataCurve from './components/RealTimeDataCurve'
 import OverlayRealTimeDataCurve from './components/OverlayRealTimeDataCurve'
@@ -79,12 +80,12 @@ class Page extends Component {
     }
     render() {
         return (
-          <div style={{height:'100%',width:'100%'}}>
-          <div id="map"></div>
-          <RealTimeDataCurve ref="realTimeDataCurve"></RealTimeDataCurve>
-          <OverlayRealTimeDataCurve ref="overlayRealTimeDateCurve"></OverlayRealTimeDataCurve>
-          <HistoryDataCurve ref="historyDataCurve"></HistoryDataCurve>
-          </div>
+            <div style={{height:'100%',width:'100%'}}>
+            <div id="map"></div>
+            <RealTimeDataCurve ref="realTimeDataCurve"></RealTimeDataCurve>
+            <OverlayRealTimeDataCurve ref="overlayRealTimeDateCurve"></OverlayRealTimeDataCurve>
+            <HistoryDataCurve ref="historyDataCurve"></HistoryDataCurve>
+            </div>
       )
     }
 }
