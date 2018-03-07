@@ -5,6 +5,7 @@ import {siteListRequest} from '../../service'
 import {HomeMenuControl} from '../../controls'
 import RealTimeDataCurve from './components/RealTimeDataCurve'
 import OverlayRealTimeDataCurve from './components/OverlayRealTimeDataCurve'
+import HistoryDataCurve from './components/HistoryDataCurve'
 import SitePopupItem from './components/SitePopupItem'
 
 let ReactDom = require('react-dom')
@@ -15,7 +16,7 @@ class Page extends Component {
     static displayName = 'HomePage'
     static  propTypes = {
       sites:PropTypes.array.isRequired,
-      dispatch:PropTypes.func.isRequired
+      dispatch:PropTypes.func.isRequired,
     }
 
     componentWillReceiveProps(nextProps){
@@ -52,6 +53,9 @@ class Page extends Component {
               case 2:
                 this.refs['overlayRealTimeDateCurve'].getWrappedInstance().toggleVisible()
                 break;
+              case 3:
+                this.refs['historyDataCurve'].getWrappedInstance().toggleVisible()
+                break;
               default:
             }
           }
@@ -66,7 +70,11 @@ class Page extends Component {
         map:map
       }
       map.on('load',()=>{
-        dispatch(siteListRequest({}));
+
+        setInterval(()=>{
+          dispatch(siteListRequest({}))
+        },this.props.cycleTime*1000)
+
       })
     }
     render() {
@@ -75,6 +83,7 @@ class Page extends Component {
           <div id="map"></div>
           <RealTimeDataCurve ref="realTimeDataCurve"></RealTimeDataCurve>
           <OverlayRealTimeDataCurve ref="overlayRealTimeDateCurve"></OverlayRealTimeDataCurve>
+          <HistoryDataCurve ref="historyDataCurve"></HistoryDataCurve>
           </div>
       )
     }

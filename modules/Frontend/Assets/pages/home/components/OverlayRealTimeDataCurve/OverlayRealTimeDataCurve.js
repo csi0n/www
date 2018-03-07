@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {Modal,Row,Col,Button,DatePicker} from 'antd'
+import {Modal,Row,Col,Button,DatePicker,Select,Form} from 'antd'
+const FormItem = Form.Item
 import SiteSelect from './../SiteSelect'
 import CollectionType from './../CollectionType'
 import PropTypes from 'prop-types'
@@ -27,16 +28,52 @@ class OverlayRealTimeDataCurve extends Component{
       visible:!this.state.visible
     })
   }
-  getOption(){
-      return {
+  submit(){
+    this.props.dispatch(collectionDataByDateAreaRequest({
+      ids:this.state.sites,
+      start:this.state.start,
+      end:this.state.end
+    }))
+  }
+  handleSiteSelectChange(sites){
+    this.setState({
+      sites:sites
+    })
+  }
+
+  handleCollectionTypeChange(type){
+    this.setState({
+      type:type
+    })
+  }
+  handleBaseType(type){
+    this.setState({
+      baseType:type
+    })
+  }
+  handleTime(value){
+    this.setState({
+      start:value[0].format('YYYY-MM-DD'),
+      end:value[1].format('YYYY-MM-DD')
+    })
+  }
+  renderEchart(){
+    return this.props.overlayRealTimeCollectionData.map((site,index)=>{
+      let xAxisData=[],typeSeries=[],baseTypeSeries=[]
+      _.map(site.collectionData,(collectionData)=>{
+        xAxisData.push(collectionData.collectionDateTime)
+        typeSeries.push(collectionData[this.state.type])
+        baseTypeSeries.push(collectionData[this.state.baseType])
+      })
+      let options={
           title: {
-              text: '折线图堆叠'
+              text: `${site.name}叠加实时数据曲线图`
           },
           tooltip: {
               trigger: 'axis'
           },
           legend: {
-              data:this.state.legendData
+              data:[this.state.type,this.state.baseType]
           },
           grid: {
               left: '3%',
@@ -52,7 +89,7 @@ class OverlayRealTimeDataCurve extends Component{
           xAxis: {
               type: 'category',
               boundaryGap: false,
-              data: this.state.xAxisData
+              data: xAxisData
           },
           yAxis: {
               type: 'value'
@@ -74,95 +111,56 @@ class OverlayRealTimeDataCurve extends Component{
                   shadowOffsetY: 2
               }
           }],
-          series: this.state.series
+          series: [{
+              name:this.state.type,
+              type:'line',
+              stack:'总量',
+              data:typeSeries
+          },{
+            name:this.state.baseType,
+            type:'line',
+            stack:'总量',
+            data:baseTypeSeries
+          }]
       }
-  }
-  submit(){
-    this.props.dispatch(collectionDataByDateAreaRequest({
-      ids:this.state.sites,
-      start:this.state.start,
-      end:this.state.end
-    }))
-  }
-  componentWillReceiveProps(nextProps){
-    if (nextProps.overlayRealTimeCollectionData) {
-      let legendData=[],series=[],xAxisData=[],firstMark=true
-      _.map(nextProps.overlayRealTimeCollectionData,(site)=>{
-        legendData.push(site.name)
-        let seryData=[]
-        _.map(site.collectionData,(siteDay)=>{
-          if (firstMark) {
-            xAxisData.push(siteDay.collectionDateTime)
-          }
-          seryData.push(siteDay[this.state.type])
-        })
-        firstMark=false
-        let sery={
-          name:site.name,
-          type:'line',
-          stack:'总量',
-          data:seryData
-        }
-        series.push(sery)
-      })
-
-      this.setState({
-        legendData:legendData,
-        series:series,
-        xAxisData:xAxisData
-      })
-    }
-  }
-  handleSiteSelectChange(sites){
-    this.setState({
-      sites:sites
-    })
-  }
-
-  handleCollectionTypeChange(type){
-    this.setState({
-      type:type
-    })
-  }
-  handleTime(value){
-    this.setState({
-      start:value[0].format('YYYY-MM-DD'),
-      end:value[1].format('YYYY-MM-DD')
+      return <ReactEcharts key={index} style={{marginTop:'20px'}} option={options} />
     })
   }
   render(){
     return (
       <Modal
-        title="实时数据曲线"
+        title="叠加实时数据曲线"
         style={{top:20}}
         width={'80%'}
         visible={this.state.visible}
         onOk={()=>this.toggleVisible()}
         onCancel={()=>this.toggleVisible()}
-        // footer={[
-        //     <Button key="submit" onClick={this.toggleVisible()}>确认</Button>
-        //   ]}
+        okText="确认"
+        cancelText="取消"
       >
-      <Row>
-        <Col span={4}>
-          <SiteSelect handleSiteSelectChange={(e)=>this.handleSiteSelectChange(e)}></SiteSelect>
-        </Col>
-        <Col span={8} offset={1}>
-          <CollectionType handleCollectionTypeChange={(e)=>this.handleCollectionTypeChange(e.target.value)}></CollectionType>
-        </Col>
-        <Col span={9} offset={1}>
-        <DatePicker.RangePicker
-          showTime={{ format: 'HH:mm' }}
-          format="YYYY-MM-DD HH:mm"
-          placeholder={['开始时间', '结束时间']}
-          onOk={(value)=>this.handleTime(value)}
-        />
-        </Col>
-        <Col span={1}>
-         <Button onClick={()=>this.submit()} shape="circle" icon="search" />
-        </Col>
-      </Row>
-      <ReactEcharts style={{marginTop:'20px'}} option={this.getOption()} />
+                <SiteSelect handleSiteSelectChange={(e)=>this.handleSiteSelectChange(e)}></SiteSelect>
+
+                <CollectionType handleCollectionTypeChange={(e)=>this.handleCollectionTypeChange(e.target.value)}></CollectionType>
+
+                <Select defaultValue="water" onChange={(e)=>this.handleBaseType(e)}>
+                  <Select.Option value="water">水</Select.Option>
+                  <Select.Option value="turbidity">浊度</Select.Option>
+                  <Select.Option value="temperature">温度</Select.Option>
+                  <Select.Option value="conductivity">导电率</Select.Option>
+                  <Select.Option value="salinity">盐度</Select.Option>
+                  <Select.Option value="electricity">电</Select.Option>
+                </Select>
+
+                <DatePicker.RangePicker
+                  showTime={{ format: 'HH:mm' }}
+                  format="YYYY-MM-DD HH:mm"
+                  placeholder={['开始时间', '结束时间']}
+                  onOk={(value)=>this.handleTime(value)}
+                />
+
+             <Button onClick={()=>this.submit()} shape="circle" icon="search" />
+
+        {this.renderEchart()}
       </Modal>
     )
   }

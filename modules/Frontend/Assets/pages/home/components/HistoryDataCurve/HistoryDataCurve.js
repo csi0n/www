@@ -1,15 +1,15 @@
 import React, {Component} from 'react'
-import {Modal,Row,Col,Button} from 'antd'
+import {Modal,Row,Col,Button,DatePicker} from 'antd'
 import SiteSelect from './../SiteSelect'
 import CollectionType from './../CollectionType'
 import PropTypes from 'prop-types'
 import ReactEcharts from 'echarts-for-react';
-import {loadTodayCollectionDataRequest} from './../../../../service'
+import {collectionDataByDateAreaRequest} from './../../../../service'
 let _ = require('lodash')
-class RealTimeDataCurve extends Component{
-  static displayName = 'RealTimeDataCurve'
+class HistoryDataCurve extends Component{
+  static displayName = 'HistoryDataCurve'
   static  propTypes = {
-    todayCollectionDataSites:PropTypes.array.isRequired,
+    overlayRealTimeCollectionData:PropTypes.array.isRequired,
     dispatch:PropTypes.func.isRequired,
   }
   constructor(props){
@@ -30,7 +30,7 @@ class RealTimeDataCurve extends Component{
   getOption(){
       return {
           title: {
-              text: '实时数据曲线图'
+              text: '历史数据曲线图'
           },
           tooltip: {
               trigger: 'axis'
@@ -78,15 +78,19 @@ class RealTimeDataCurve extends Component{
       }
   }
   submit(){
-    this.props.dispatch(loadTodayCollectionDataRequest({ids:this.state.sites}))
+    this.props.dispatch(collectionDataByDateAreaRequest({
+      ids:this.state.sites,
+      start:this.state.start,
+      end:this.state.end
+    }))
   }
   componentWillReceiveProps(nextProps){
-    if (nextProps.todayCollectionDataSites) {
+    if (nextProps.overlayRealTimeCollectionData) {
       let legendData=[],series=[],xAxisData=[],firstMark=true
-      _.map(nextProps.todayCollectionDataSites,(site)=>{
+      _.map(nextProps.overlayRealTimeCollectionData,(site)=>{
         legendData.push(site.name)
         let seryData=[]
-        _.map(site.today,(siteDay)=>{
+        _.map(site.collectionData,(siteDay)=>{
           if (firstMark) {
             xAxisData.push(siteDay.collectionDateTime)
           }
@@ -107,8 +111,6 @@ class RealTimeDataCurve extends Component{
         series:series,
         xAxisData:xAxisData
       })
-
-
     }
   }
   handleSiteSelectChange(sites){
@@ -122,10 +124,16 @@ class RealTimeDataCurve extends Component{
       type:type
     })
   }
+  handleTime(value){
+    this.setState({
+      start:value[0].format('YYYY-MM-DD'),
+      end:value[1].format('YYYY-MM-DD')
+    })
+  }
   render(){
     return (
       <Modal
-        title="实时数据曲线"
+        title="历史数据曲线"
         style={{top:20}}
         width={'80%'}
         visible={this.state.visible}
@@ -138,8 +146,16 @@ class RealTimeDataCurve extends Component{
         <Col span={4}>
           <SiteSelect handleSiteSelectChange={(e)=>this.handleSiteSelectChange(e)}></SiteSelect>
         </Col>
-        <Col span={18} offset={1}>
+        <Col span={8} offset={1}>
           <CollectionType handleCollectionTypeChange={(e)=>this.handleCollectionTypeChange(e.target.value)}></CollectionType>
+        </Col>
+        <Col span={9} offset={1}>
+        <DatePicker.RangePicker
+          showTime={{ format: 'HH:mm' }}
+          format="YYYY-MM-DD HH:mm"
+          placeholder={['开始时间', '结束时间']}
+          onOk={(value)=>this.handleTime(value)}
+        />
         </Col>
         <Col span={1}>
          <Button onClick={()=>this.submit()} shape="circle" icon="search" />
@@ -150,4 +166,4 @@ class RealTimeDataCurve extends Component{
     )
   }
 }
-export default RealTimeDataCurve
+export default HistoryDataCurve

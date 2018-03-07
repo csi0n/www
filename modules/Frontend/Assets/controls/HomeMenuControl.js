@@ -23,7 +23,8 @@ import {render} from 'react-dom'
       const menu=(
         <Menu onClick={this._config.callback.menuClick}>
           <Menu.Item key="1"><Icon type="area-chart" /> 实时数据曲线</Menu.Item>
-          <Menu.Item key="2"><Icon type="bar-chart" /> 叠加实时数据曲线</Menu.Item>
+          <Menu.Item key="2"><Icon type="area-chart" /> 叠加实时数据曲线</Menu.Item>
+          <Menu.Item key="3"><Icon type="bar-chart" /> 历史数据查询</Menu.Item>
         </Menu>
       )
 
