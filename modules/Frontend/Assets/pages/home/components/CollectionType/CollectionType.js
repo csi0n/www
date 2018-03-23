@@ -13,7 +13,7 @@ class CollectionType extends Component {
     this.state={
       collectionTypes:[{
         id:'water',
-        name:'水'
+        name:'水位'
       },{
         id:'turbidity',
         name:'浊度'
@@ -21,14 +21,14 @@ class CollectionType extends Component {
         id:'temperature',
         name:'温度'
       },{
-        id:'conductivity',
-        name:'导电率'
+          id:'salinity',
+          name:'盐度'
       },{
-        id:'salinity',
-        name:'盐度'
+        id:'conductivity',
+        name:'电导率'
       },{
         id:'electricity',
-        name:'电'
+        name:'电量'
       }]
     }
   }

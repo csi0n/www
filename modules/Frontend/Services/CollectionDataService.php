@@ -33,7 +33,7 @@ class CollectionDataService
     {
         return $this->collectionDataRepository
             ->where('DeviceID', $deviceId)
-            ->orderBy('CollectionDateTime')
+            ->orderBy('CollectionDateTime','desc')
             ->first();
     }
 
