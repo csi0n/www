@@ -20,7 +20,7 @@ class SitePopupItem extends Component {
             )
         }
         return <Row>
-            <Col span={24}>地址:{site.newest_collection_data.name}</Col>
+            <Col span={24}>地址:{site.name}</Col>
             <Col span={24}>收集时间:{site.newest_collection_data.collectionDateTime}</Col>
             <Col span={24}>水位:{site.newest_collection_data.water}</Col>
             <Col span={24}>浊度:{site.newest_collection_data.turbidity}</Col>
