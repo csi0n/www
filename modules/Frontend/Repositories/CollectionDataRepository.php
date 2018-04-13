@@ -18,7 +18,7 @@ class CollectionDataRepository extends Repository
     public function todayByDeviceID($deviceId)
     {
         return $this->getModel()
-            ->whereDate('CollectionDateTime', '2014-05-02')
+            ->whereDate('CollectionDateTime', date('Y-m-d'))
             ->where('DeviceID', $deviceId)
             ->get();
     }
