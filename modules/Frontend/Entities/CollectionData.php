@@ -9,5 +9,5 @@ class CollectionData extends Model
     protected $fillable = ['*'];
     public $timestamps = false;
     protected $connection = 'datacollectionsystem';
-    protected $table = 'tb_b_collectiondata';
+    protected $table = 'TB_B_CollectionData';
 }
