@@ -8,6 +8,7 @@ import RealTimeDataCurve from './components/RealTimeDataCurve'
 import OverlayRealTimeDataCurve from './components/OverlayRealTimeDataCurve'
 import HistoryDataCurve from './components/HistoryDataCurve'
 import SitePopupItem from './components/SitePopupItem'
+import HistoryRealTimeDataCurve from "./components/HistoryRealTimeDataCurve";
 
 let ReactDom = require('react-dom')
 
@@ -25,21 +26,22 @@ class Page extends Component {
         if (nextProps.sites) {
 
             // if (!this.props.sites.equals(nextProps.sites)) {
-                const {sites} = nextProps
-                let {map} = this.mapbox;
+            const {sites} = nextProps
+            let {map} = this.mapbox;
 
 
-                if (this.popupList.length > 0) {
-                    this.popupList.forEach((popop) => {
-                        popop.remove();
-                    })
-                    this.popupList = [];
-                }
+            if (this.popupList.length > 0) {
+                this.popupList.forEach((popop) => {
+                    popop.remove();
+                })
+                this.popupList = [];
+            }
 
 
-                _.map(sites, (site) => {
+            _.map(sites, (site) => {
+                if (_.indexOf(this.props.disableIds, site.id) <= -1) {
                     let id = `site-${site.id}`,
-                        popup = new mapboxGl.Popup({closeOnClick: false})
+                        popup = new mapboxGl.Popup({closeOnClick: true, closeButton: false})
                             .setLngLat([site.latitude, site.longitude])
                             .setHTML(`<div style="width:150px" id="${id}"></div>`)
                             .addTo(map)
@@ -49,7 +51,8 @@ class Page extends Component {
                         <SitePopupItem site={site}/>,
                         document.getElementById(id)
                     )
-                })
+                }
+            })
             // }
         }
     }
@@ -71,6 +74,9 @@ class Page extends Component {
                         case 3:
                             this.refs['historyDataCurve'].getWrappedInstance().toggleVisible()
                             break;
+                        case 4:
+                            this.refs['historyRealTimeDataCurve'].getWrappedInstance().toggleVisible()
+                            break;
                         default:
                     }
                 }
@@ -87,9 +93,14 @@ class Page extends Component {
 
         map.on('load', () => {
             this.popupList = [];
-            setInterval(() => {
-                dispatch(siteListRequest({}))
-            }, this.props.cycleTime * 1000)
+            // setInterval(() => {
+            //     dispatch(siteListRequest({}))
+            // }, this.props.cycleTime * 1000)
+            dispatch(siteListRequest({}))
+
+            setTimeout(() => {
+                window.href.reload()
+            }, this.props.reloadTime * 1000 * 60 * 60)
 
         })
     }
@@ -101,6 +112,7 @@ class Page extends Component {
                 <RealTimeDataCurve ref="realTimeDataCurve"></RealTimeDataCurve>
                 <OverlayRealTimeDataCurve ref="overlayRealTimeDateCurve"></OverlayRealTimeDataCurve>
                 <HistoryDataCurve ref="historyDataCurve"></HistoryDataCurve>
+                <HistoryRealTimeDataCurve ref="historyRealTimeDataCurve"></HistoryRealTimeDataCurve>
             </div>
         )
     }

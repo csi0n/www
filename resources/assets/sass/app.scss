@@ -1,21 +1,19 @@
-
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
-
 // Variables
 @import "variables";
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
 @import "~mapbox-gl/dist/mapbox-gl.css";
-
 @import "~antd/dist/antd.min.css";
+@import "common";
+@import "custom_ant";
 
-html,body,#app,#map,#full{
+html, body, #app, #map, #full {
   height: 100%;
   width: 100%;
 }
+
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

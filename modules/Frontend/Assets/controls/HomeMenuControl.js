@@ -1,7 +1,8 @@
-import { Button, Menu, Dropdown, Icon } from 'antd';
+import {Button, Menu, Dropdown, Icon} from 'antd';
 import React, {Component} from 'react'
 import {render} from 'react-dom'
- class HomeMenuControl {
+
+class HomeMenuControl {
 
     constructor(config) {
         this._config = config;
@@ -19,25 +20,27 @@ import {render} from 'react-dom'
     getDefaultPosition() {
         return 'top-right'
     }
-    init(){
-      const menu=(
-        <Menu onClick={this._config.callback.menuClick}>
-          <Menu.Item key="1"><Icon type="area-chart" /> 实时数据曲线</Menu.Item>
-          <Menu.Item key="2"><Icon type="area-chart" /> 叠加实时数据曲线</Menu.Item>
-          <Menu.Item key="3"><Icon type="bar-chart" /> 历史数据查询</Menu.Item>
-        </Menu>
-      )
 
-      render(
-        <div>
-          <Dropdown overlay={menu}>
-            <Button>
-              <Icon type="bars" />
-            </Button>
-          </Dropdown>
-        </div>,
-        document.getElementById('home-menu')
-      )
+    init() {
+        const menu = (
+            <Menu onClick={this._config.callback.menuClick}>
+                <Menu.Item key="1"><Icon type="area-chart"/> 实时数据曲线</Menu.Item>
+                <Menu.Item key="2"><Icon type="area-chart"/> 叠加实时数据曲线</Menu.Item>
+                <Menu.Item key="3"><Icon type="bar-chart"/> 历史叠加数据查询</Menu.Item>
+                <Menu.Item key="4"><Icon type="bar-chart"/> 叠加数据实时查询</Menu.Item>
+            </Menu>
+        )
+
+        render(
+            <div>
+                <Dropdown overlay={menu}>
+                    <Button>
+                        <Icon type="bars"/>
+                    </Button>
+                </Dropdown>
+            </div>,
+            document.getElementById('home-menu')
+        )
     }
 
     onRemove() {
