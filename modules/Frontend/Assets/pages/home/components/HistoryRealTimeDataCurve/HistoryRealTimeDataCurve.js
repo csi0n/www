@@ -162,18 +162,20 @@ class HistoryRealTimeDataCurve extends Component {
                 cancelText="取消"
             >
                 <Spin spinning={this.state.loading}>
-                    <Row>
-                        <Col span={5}>
-                            <SiteSelect handleSiteSelectChange={(e) => this.handleSiteSelectChange(e)}></SiteSelect>
-                        </Col>
-                        <Col span={10} offset={1}>
-                            <CollectionType
-                                handleCollectionTypeChange={(e) => this.handleCollectionTypeChange(e.target.value)}></CollectionType>
-                        </Col>
-                        <Col span={1}>
-                            <Button onClick={() => this.submit()} shape="circle" icon="search"/>
-                        </Col>
-                    </Row>
+                    <div className="search-form">
+                        <Row gutter="24">
+                            <Col span={18}>
+                                <SiteSelect handleSiteSelectChange={(e) => this.handleSiteSelectChange(e)}></SiteSelect>
+                            </Col>
+                            <Col span={2}>
+                                <Button onClick={() => this.submit()} shape="circle" icon="search"/>
+                            </Col>
+                            <Col span={18}>
+                                <CollectionType
+                                    handleCollectionTypeChange={(e) => this.handleCollectionTypeChange(e.target.value)}></CollectionType>
+                            </Col>
+                        </Row>
+                    </div>
                     <ReactEcharts style={{marginTop: '20px'}} option={this.getOption()}/>
                 </Spin>
             </Modal>

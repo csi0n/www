@@ -10,6 +10,10 @@ import HistoryDataCurve from './components/HistoryDataCurve'
 import SitePopupItem from './components/SitePopupItem'
 import HistoryRealTimeDataCurve from "./components/HistoryRealTimeDataCurve";
 
+
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+
 let ReactDom = require('react-dom')
 
 let _ = require('lodash')

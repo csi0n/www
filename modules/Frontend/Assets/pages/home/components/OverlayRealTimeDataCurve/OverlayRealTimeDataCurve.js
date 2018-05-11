@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import moment from 'moment'
 import {Modal, Row, Col, Button, DatePicker, Select, Form, Spin} from 'antd'
 
 const FormItem = Form.Item
@@ -77,6 +78,10 @@ class OverlayRealTimeDataCurve extends Component {
             start: value[0].format('YYYY-MM-DD'),
             end: value[1].format('YYYY-MM-DD')
         })
+    }
+
+    disabledDateHandler(current){
+        return current && current > moment();
     }
 
     renderEchart() {
@@ -162,29 +167,38 @@ class OverlayRealTimeDataCurve extends Component {
                 cancelText="取消"
             >
                 <Spin spinning={this.state.loading}>
-                    <SiteSelect handleSiteSelectChange={(e) => this.handleSiteSelectChange(e)}></SiteSelect>
-
-                    <CollectionType
-                        handleCollectionTypeChange={(e) => this.handleCollectionTypeChange(e.target.value)}></CollectionType>
-
-                    <Select defaultValue="water" onChange={(e) => this.handleBaseType(e)}>
-                        <Select.Option value="water">水位</Select.Option>
-                        <Select.Option value="turbidity">浊度</Select.Option>
-                        <Select.Option value="temperature">温度</Select.Option>
-                        <Select.Option value="salinity">盐度</Select.Option>
-                        <Select.Option value="conductivity">电导率</Select.Option>
-                        <Select.Option value="electricity">电量</Select.Option>
-                    </Select>
-
-                    <DatePicker.RangePicker
-                        showTime={{format: 'HH:mm'}}
-                        format="YYYY-MM-DD HH:mm"
-                        placeholder={['开始时间', '结束时间']}
-                        onOk={(value) => this.handleTime(value)}
-                    />
-
-                    <Button onClick={() => this.submit()} shape="circle" icon="search"/>
-
+                    <div className="search-form">
+                        <Row gutter={24}>
+                            <Col span={18}>
+                                <SiteSelect handleSiteSelectChange={(e) => this.handleSiteSelectChange(e)}></SiteSelect>
+                            </Col>
+                            <Col span={2}>
+                                <Button onClick={() => this.submit()} shape="circle" icon="search"/>
+                            </Col>
+                            <Col span={18}>
+                                <CollectionType handleCollectionTypeChange={(e) => this.handleCollectionTypeChange(e.target.value)}></CollectionType>
+                            </Col>
+                            <Col span={18}>
+                                <div className="search-form-inner__item">
+                                    <Select defaultValue="water" onChange={(e) => this.handleBaseType(e)}>
+                                        <Select.Option value="water">水位</Select.Option>
+                                        <Select.Option value="turbidity">浊度</Select.Option>
+                                        <Select.Option value="temperature">温度</Select.Option>
+                                        <Select.Option value="salinity">盐度</Select.Option>
+                                        <Select.Option value="conductivity">电导率</Select.Option>
+                                        <Select.Option value="electricity">电量</Select.Option>
+                                    </Select>
+                                    <DatePicker.RangePicker
+                                        showTime={{format: 'HH:mm'}}
+                                        format="YYYY-MM-DD HH:mm"
+                                        disabledDate={this.disabledDateHandler}
+                                        placeholder={['开始时间', '结束时间']}
+                                        onOk={(value) => this.handleTime(value)}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
                     {this.renderEchart()}
                 </Spin>
             </Modal>

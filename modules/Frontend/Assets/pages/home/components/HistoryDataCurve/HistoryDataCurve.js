@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import moment from 'moment'
 import {Modal,Row,Col,Button,DatePicker,Spin} from 'antd'
 import SiteSelect from './../SiteSelect'
 import CollectionType from './../CollectionType'
@@ -135,6 +136,9 @@ class HistoryDataCurve extends Component{
       end:value[1].format('YYYY-MM-DD')
     })
   }
+  disabledDateHandler(current){
+    return current && current > moment();
+  }
   render(){
     return (
       <Modal
@@ -148,26 +152,31 @@ class HistoryDataCurve extends Component{
         cancelText="取消"
       >
         <Spin spinning={this.state.loading}>
-          <Row>
-            <Col span={4}>
-              <SiteSelect handleSiteSelectChange={(e)=>this.handleSiteSelectChange(e)}></SiteSelect>
-            </Col>
-            <Col span={8} offset={1}>
-              <CollectionType handleCollectionTypeChange={(e)=>this.handleCollectionTypeChange(e.target.value)}></CollectionType>
-            </Col>
-            <Col span={9} offset={1}>
-            <DatePicker.RangePicker
-              showTime={{ format: 'HH:mm' }}
-              format="YYYY-MM-DD HH:mm"
-              placeholder={['开始时间', '结束时间']}
-              onOk={(value)=>this.handleTime(value)}
-            />
-            </Col>
-            <Col span={1}>
-             <Button onClick={()=>this.submit()} shape="circle" icon="search" />
-            </Col>
-          </Row>
-          <ReactEcharts style={{marginTop:'20px'}} option={this.getOption()} />
+            <div className="search-form">
+                <Row gutter={24}>
+                    <Col span={18}>
+                        <SiteSelect handleSiteSelectChange={(e)=>this.handleSiteSelectChange(e)}></SiteSelect>
+                    </Col>
+                    <Col span={2}>
+                        <Button onClick={()=>this.submit()} shape="circle" icon="search" />
+                    </Col>
+                    <Col span={18}>
+                        <CollectionType handleCollectionTypeChange={(e)=>this.handleCollectionTypeChange(e.target.value)}></CollectionType>
+                    </Col>
+                    <div>
+                        <Col span={6}>
+                            <DatePicker.RangePicker
+                                showTime={{ format: 'HH:mm' }}
+                                format="YYYY-MM-DD HH:mm"
+                                disabledDate={this.disabledDateHandler}
+                                placeholder={['开始时间', '结束时间']}
+                                onOk={(value)=>this.handleTime(value)}
+                            />
+                        </Col>
+                    </div>
+                </Row>
+            </div>
+            <ReactEcharts style={{marginTop:'20px'}} option={this.getOption()} />
         </Spin>
       </Modal>
     )
