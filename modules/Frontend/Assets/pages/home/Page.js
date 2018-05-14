@@ -79,7 +79,7 @@ class Page extends Component {
                 })
                 this.popupList = [];
             }
-            this.addPoint(sites);
+            // this.addPoint(sites);
 
             _.map(sites, (site) => {
                 if (_.indexOf(this.props.disableIds, site.id) <= -1) {
