@@ -26,6 +26,46 @@ class Page extends Component {
         dispatch: PropTypes.func.isRequired,
     }
 
+    addPoint(sites){
+        let {map} = this.mapbox;
+        let features = [];
+
+        _.map(sites, (site) =>{
+            if (_.indexOf(this.props.disableIds, site.id) <= -1) {
+                let obj = {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [site.latitude, site.longitude]
+                    },
+                    "properties": {
+                        "title": site.name,
+                        "icon": "monument"
+                    }
+                };
+                features.push(obj);
+            }
+        });
+
+        map.addLayer({
+            "id": "points",
+            "type": "symbol",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": features
+                }
+            },
+            "layout": {
+                "icon-image": "{icon}-15",
+                "text-field": "{title}",
+                "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+                "text-offset": [0, 0.6],
+                "text-anchor": "top"
+            }
+        });
+    }
     componentWillReceiveProps(nextProps) {
         if (nextProps.sites) {
 
@@ -33,14 +73,13 @@ class Page extends Component {
             const {sites} = nextProps
             let {map} = this.mapbox;
 
-
             if (this.popupList.length > 0) {
                 this.popupList.forEach((popop) => {
                     popop.remove();
                 })
                 this.popupList = [];
             }
-
+            this.addPoint(sites);
 
             _.map(sites, (site) => {
                 if (_.indexOf(this.props.disableIds, site.id) <= -1) {
@@ -50,7 +89,6 @@ class Page extends Component {
                             .setHTML(`<div style="width:150px" id="${id}"></div>`)
                             .addTo(map)
                     this.popupList.push(popup);
-
                     ReactDom.render(
                         <SitePopupItem site={site}/>,
                         document.getElementById(id)

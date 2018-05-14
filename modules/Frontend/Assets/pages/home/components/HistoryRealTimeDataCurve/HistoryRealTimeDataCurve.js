@@ -163,7 +163,7 @@ class HistoryRealTimeDataCurve extends Component {
             >
                 <Spin spinning={this.state.loading}>
                     <div className="search-form">
-                        <Row gutter="24">
+                        <Row gutter={24}>
                             <Col span={18}>
                                 <SiteSelect handleSiteSelectChange={(e) => this.handleSiteSelectChange(e)}></SiteSelect>
                             </Col>
