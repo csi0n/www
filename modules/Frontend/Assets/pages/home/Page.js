@@ -18,6 +18,7 @@ let ReactDom = require('react-dom')
 
 let _ = require('lodash')
 let mapboxGl = require('mapbox-gl')
+let isAddPornt = false;
 
 class Page extends Component {
     static displayName = 'HomePage'
@@ -27,8 +28,10 @@ class Page extends Component {
     }
 
     addPoint(sites){
+        if(isAddPornt) return;
         let {map} = this.mapbox;
         let features = [];
+
 
         _.map(sites, (site) =>{
             if (_.indexOf(this.props.disableIds, site.id) <= -1) {
@@ -65,6 +68,7 @@ class Page extends Component {
                 "text-anchor": "top"
             }
         });
+        isAddPornt = true;
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.sites) {
@@ -79,7 +83,7 @@ class Page extends Component {
                 })
                 this.popupList = [];
             }
-            // this.addPoint(sites);
+            this.addPoint(sites);
 
             _.map(sites, (site) => {
                 if (_.indexOf(this.props.disableIds, site.id) <= -1) {
