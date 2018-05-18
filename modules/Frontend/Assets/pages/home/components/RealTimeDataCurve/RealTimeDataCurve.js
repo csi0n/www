@@ -19,11 +19,13 @@ class RealTimeDataCurve extends Component{
       visible:false,
       sites:[],
       type:null,
-      loading:false
+      loading:false,
+      timeFlag: null,
     }
 
   }
   toggleVisible(){
+    clearTimeout(this.state.timeFlag);
     this.setState({
       visible:!this.state.visible
     })
@@ -79,10 +81,16 @@ class RealTimeDataCurve extends Component{
       }
   }
   submit(){
+    let self = this;
     this.setState({
       loading:true
     })
     this.props.dispatch(loadTodayCollectionDataRequest({ids:this.state.sites}))
+    this.setState({
+      timeFlag: setTimeout(()=>{
+        self.submit();
+      }, this.props.loopTime * 1000 * 60 * 60)
+    })
   }
   componentWillReceiveProps(nextProps){
     if (nextProps.todayCollectionDataSites) {
@@ -121,7 +129,6 @@ class RealTimeDataCurve extends Component{
       sites:sites
     })
   }
-
   handleCollectionTypeChange(type){
     this.setState({
       type:type
@@ -137,8 +144,8 @@ class RealTimeDataCurve extends Component{
           visible={this.state.visible}
           onOk={()=>this.toggleVisible()}
           onCancel={()=>this.toggleVisible()}
-          okText="确认"
-          cancelText="取消"
+          maskClosable={false}
+          footer={null}
         >
         <Spin spinning={this.state.loading}>
           <div className="search-form">

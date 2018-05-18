@@ -26,6 +26,24 @@ class Page extends Component {
         sites: PropTypes.array.isRequired,
         dispatch: PropTypes.func.isRequired,
     }
+    constructor(props){
+        super(props)
+
+        this.state = {
+            timeFlag: null,
+        }
+    }
+    getSiteData(){
+        let self = this;
+        clearTimeout(this.state.timeFlag);
+        this.props.dispatch(siteListRequest({}));
+
+        this.setState({
+            timeFlag: setTimeout(() => {
+                self.getSiteData();
+            }, this.props.cycleTime * 1000 * 60)
+        })
+    }
 
     addPoint(sites){
         if(isAddPornt) return;
@@ -88,9 +106,9 @@ class Page extends Component {
             _.map(sites, (site) => {
                 if (_.indexOf(this.props.disableIds, site.id) <= -1) {
                     let id = `site-${site.id}`,
-                        popup = new mapboxGl.Popup({closeOnClick: true, closeButton: false})
+                        popup = new mapboxGl.Popup({closeOnClick: false, closeButton: false})
                             .setLngLat([site.latitude, site.longitude])
-                            .setHTML(`<div style="width:150px" id="${id}"></div>`)
+                            .setHTML(`<div style="width:150px" class="site-popup" id="${id}"></div>`)
                             .addTo(map)
                     this.popupList.push(popup);
                     ReactDom.render(
@@ -139,15 +157,14 @@ class Page extends Component {
 
         map.on('load', () => {
             this.popupList = [];
+            this.getSiteData();
             // setInterval(() => {
             //     dispatch(siteListRequest({}))
             // }, this.props.cycleTime * 1000)
-            dispatch(siteListRequest({}))
 
-            setTimeout(() => {
-                window.href.reload()
-            }, this.props.reloadTime * 1000 * 60 * 60)
-
+            // setTimeout(() => {
+            //     window.href.reload()
+            // }, this.props.reloadTime * 1000 * 60 * 60)
         })
     }
 

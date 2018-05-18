@@ -12,11 +12,11 @@ class SitePopupItem extends Component {
         let status = {};
         if (site.origin_device && site.origin_device.active === 'N') {
             status = (
-                <Tag color="#f50">未激活</Tag>
+                <Tag color="#f64744">未激活</Tag>
             )
         } else {
             status = (
-                <Tag color="#87d068">已激活</Tag>
+                <Tag color="#37db67">已激活</Tag>
             )
         }
         return <Row className={'site_pop_item'}>

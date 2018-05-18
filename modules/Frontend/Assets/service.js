@@ -1,6 +1,7 @@
 import Http from '@/utils/Http'
 import Transformer from '@/utils/Transformer'
 import * as Actions from './store/actions'
+import moment from 'moment'
 
 function transformRequest(params) {
     return Transformer.send(params)
@@ -22,9 +23,13 @@ export function siteListRequest({url = '/frontend/sites'}) {
     }
 }
 export function collectionDataByDateAreaRequest({ids=[],start='',end='',url='/frontend/sites/load-collection-by-date-area'}) {
+  let d = moment();
+  let s = start || d.format('YYYY-MM-DD hh:mm:ss');
+  let e = end || d.add(36,'h').format('YYYY-MM-DD hh:mm:ss');
+  //请求默认拉取36小时内数据
   return dispatch=>{
     new Promise((resolve,reject)=>{
-      Http.post(url,transformRequest({ids:ids,start:start,end:end}))
+      Http.post(url,transformRequest({ids:ids,start:s,end:e}))
       .then((res)=>{
         dispatch(Actions.collectionDataByDateArea(transformResponse(res.data.data)))
         return resolve()

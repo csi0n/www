@@ -148,8 +148,8 @@ class HistoryDataCurve extends Component{
         visible={this.state.visible}
         onOk={()=>this.toggleVisible()}
         onCancel={()=>this.toggleVisible()}
-        okText="确认"
-        cancelText="取消"
+        maskClosable={false}
+        footer={null}
       >
         <Spin spinning={this.state.loading}>
             <div className="search-form">
