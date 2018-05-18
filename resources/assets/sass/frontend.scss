@@ -36,6 +36,8 @@ span.bold {
 .ant-calendar-selected-day .ant-calendar-date,
 .ant-radio-inner:after{background-color: #9bceb8;}
 
+.ant-select-focused .ant-select-selection, .ant-select-selection:active, .ant-select-selection:focus,
+.ant-radio-focused .ant-radio-inner, .ant-radio-wrapper:hover .ant-radio .ant-radio-inner, .ant-radio:hover .ant-radio-inner,
 .ant-calendar-picker:hover .ant-calendar-picker-input:not(.ant-input-disabled),
 .ant-input:focus, .ant-input:hover,
 .ant-radio-checked .ant-radio-inner,
@@ -49,4 +51,7 @@ span.bold {
 .ant-calendar .ant-calendar-ok-btn:focus, .ant-calendar .ant-calendar-ok-btn:hover{
     background-color: #37db67;
     border-color: #37db67;
+}
+.ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after{
+    color:#9bceb8;
 }

@@ -9,7 +9,7 @@ const mapStateToProps = state => {
         overlayRealTimeCollectionData: !_.isEqual(data, {}) ?
             _.map(data, (collectionData) => new CollectionByDateArea(collectionData)) :
             [],
-        loopTime: 1
+        loopTime: 10
     }
 }
 export default connect(mapStateToProps, null, null, {withRef: true})(HistoryRealTimeDataCurve)

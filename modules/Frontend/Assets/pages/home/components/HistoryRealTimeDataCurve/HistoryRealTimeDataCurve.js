@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, Row, Col, Button, DatePicker, Spin} from 'antd'
+import {Modal, Row, Col, Button, DatePicker, Spin, notification} from 'antd'
 import SiteSelect from './../SiteSelect'
 import CollectionType from './../CollectionType'
 import PropTypes from 'prop-types'
@@ -88,7 +88,13 @@ class HistoryRealTimeDataCurve extends Component {
 
     submit() {
         let self = this;
-
+        if(this.state.sites.length <=0){
+          notification.open({
+            message: "提示",
+            description: "请先选择站点后再继续操作！"
+          })
+          return false;
+        }
         this.setState({
             loading: true
         })
@@ -100,7 +106,7 @@ class HistoryRealTimeDataCurve extends Component {
         this.setState({
             timeFlag: setTimeout(() =>{
                 self.submit();
-            }, this.props.loopTime * 1000 * 60 * 60)
+            }, this.props.loopTime * 1000 * 60)
         })
     }
 

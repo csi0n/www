@@ -78,6 +78,9 @@ class Page extends Component {
                     "features": features
                 }
             },
+            "paint": {
+                "text-color": "#FFF"
+            },
             "layout": {
                 "icon-image": "{icon}-15",
                 "text-field": "{title}",
