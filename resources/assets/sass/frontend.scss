@@ -10,3 +10,48 @@ span.bold {
     min-width: 100px;
 }
 .search-form-inner__item>.ant-calendar-picker{padding-right: 15px;}
+.ant-modal-header{background-color: #9bceb8}
+.ant-btn-primary{
+    background-color: #9bceb8;
+    border-color: #9bceb8;
+}
+.ant-calendar-today .ant-calendar-date,
+.ant-btn:focus, .ant-btn:hover{
+    color: #9bceb8;
+    border-color: #9bceb8;
+}
+.ant-btn-primary:focus, .ant-btn-primary:hover{
+    background-color: #37db67;
+    border-color: #37db67;
+    color: #FFF;
+}
+.ant-calendar-selected-day .ant-calendar-date:hover{
+    background-color: #37db67;
+}
+.ant-modal-close:focus,
+.ant-modal-close:active,
+.ant-modal-close-x:focus,
+.ant-modal-close-x:active{outline: none;}
+
+.ant-calendar-selected-day .ant-calendar-date,
+.ant-radio-inner:after{background-color: #9bceb8;}
+
+.ant-select-focused .ant-select-selection, .ant-select-selection:active, .ant-select-selection:focus,
+.ant-radio-focused .ant-radio-inner, .ant-radio-wrapper:hover .ant-radio .ant-radio-inner, .ant-radio:hover .ant-radio-inner,
+.ant-calendar-picker:hover .ant-calendar-picker-input:not(.ant-input-disabled),
+.ant-input:focus, .ant-input:hover,
+.ant-radio-checked .ant-radio-inner,
+.ant-select-selection:hover{border-color: #9bceb8;}
+
+.ant-calendar-selected-day .ant-calendar-date{color:#FFF;}
+.ant-calendar-year-panel-selected-cell .ant-calendar-year-panel-year, .ant-calendar-year-panel-selected-cell .ant-calendar-year-panel-year:hover,
+.ant-calendar-month-panel-selected-cell .ant-calendar-month-panel-month, .ant-calendar-month-panel-selected-cell .ant-calendar-month-panel-month:hover,
+.ant-calendar .ant-calendar-ok-btn{border-color: #9bceb8;background-color: #9bceb8;color:#FFF !important;}
+
+.ant-calendar .ant-calendar-ok-btn:focus, .ant-calendar .ant-calendar-ok-btn:hover{
+    background-color: #37db67;
+    border-color: #37db67;
+}
+.ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after{
+    color:#9bceb8;
+}

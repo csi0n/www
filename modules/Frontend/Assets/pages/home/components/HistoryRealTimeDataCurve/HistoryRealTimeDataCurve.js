@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, Row, Col, Button, DatePicker, Spin} from 'antd'
+import {Modal, Row, Col, Button, DatePicker, Spin, notification} from 'antd'
 import SiteSelect from './../SiteSelect'
 import CollectionType from './../CollectionType'
 import PropTypes from 'prop-types'
@@ -22,12 +22,14 @@ class HistoryRealTimeDataCurve extends Component {
             visible: false,
             sites: [],
             type: null,
-            loading: false
+            loading: false,
+            timeFlag: null
         }
 
     }
 
     toggleVisible() {
+        clearTimeout(this.state.timeFlag);
         this.setState({
             visible: !this.state.visible
         })
@@ -85,18 +87,27 @@ class HistoryRealTimeDataCurve extends Component {
     }
 
     submit() {
+        let self = this;
+        if(this.state.sites.length <=0){
+          notification.open({
+            message: "提示",
+            description: "请先选择站点后再继续操作！"
+          })
+          return false;
+        }
         this.setState({
             loading: true
         })
-
-        setInterval(() => {
-            this.props.dispatch(collectionDataByDateAreaRequest({
-                ids: this.state.sites,
-                start: this.state.start,
-                end: this.state.end
-            }))
-        }, this.props.loopTime * 1000)
-
+        this.props.dispatch(collectionDataByDateAreaRequest({
+            ids: this.state.sites,
+            start: this.state.start,
+            end: this.state.end
+        }))
+        this.setState({
+            timeFlag: setTimeout(() =>{
+                self.submit();
+            }, this.props.loopTime * 1000 * 60)
+        })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -158,8 +169,8 @@ class HistoryRealTimeDataCurve extends Component {
                 visible={this.state.visible}
                 onOk={() => this.toggleVisible()}
                 onCancel={() => this.toggleVisible()}
-                okText="确认"
-                cancelText="取消"
+                maskClosable={false}
+                footer={null}
             >
                 <Spin spinning={this.state.loading}>
                     <div className="search-form">

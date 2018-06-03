@@ -33,7 +33,7 @@ class HomeMenuControl {
 
         render(
             <div>
-                <Dropdown overlay={menu}>
+                <Dropdown overlay={menu} trigger={['click']}>
                     <Button>
                         <Icon type="bars"/>
                     </Button>

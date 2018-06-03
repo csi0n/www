@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import moment from 'moment'
-import {Modal, Row, Col, Button, DatePicker, Select, Form, Spin} from 'antd'
+import {Modal, Row, Col, Button, DatePicker, Select, Form, Spin, notification} from 'antd'
 
 const FormItem = Form.Item
 import SiteSelect from './../SiteSelect'
@@ -37,6 +37,13 @@ class OverlayRealTimeDataCurve extends Component {
     }
 
     submit() {
+        if(this.state.sites.length <=0){
+          notification.open({
+            message: "提示",
+            description: "请先选择站点后再继续操作！"
+          })
+          return false;
+        }
         this.setState({
             loading: true
         })
@@ -163,8 +170,8 @@ class OverlayRealTimeDataCurve extends Component {
                 visible={this.state.visible}
                 onOk={() => this.toggleVisible()}
                 onCancel={() => this.toggleVisible()}
-                okText="确认"
-                cancelText="取消"
+                maskClosable={false}
+                footer={null}
             >
                 <Spin spinning={this.state.loading}>
                     <div className="search-form">

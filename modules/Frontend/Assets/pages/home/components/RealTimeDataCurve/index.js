@@ -7,7 +7,8 @@ const mapStateToProps = state => {
     return {
       todayCollectionDataSites:!_.isEqual(data,{})?
       _.map(data,(todayCollectionData)=>new TodayCollectionData(todayCollectionData)):
-      []
+      [],
+        loopTime: 10
     }
 }
 export default connect(mapStateToProps,null,null,{withRef:true})(RealTimeDataCurve)
