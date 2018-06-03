@@ -19,7 +19,7 @@ const mapStateToProps = state => {
         },
         cycleTime: 10,
         reloadTime: 1,
-        disableIds: [6, 7]
+        disableIds: [6, 7, 3, 5]
     }
 }
 export default connect(mapStateToProps)(Page)
