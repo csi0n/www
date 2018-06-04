@@ -15,6 +15,13 @@ class SiteRepository extends Repository
 {
     protected $model = Site::class;
 
+    public function getByType($default = 1)
+    {
+        return $this->getModel()
+            ->whereType($default)
+            ->get();
+    }
+
     public function loadById(array $id)
     {
         return $this->getModel()

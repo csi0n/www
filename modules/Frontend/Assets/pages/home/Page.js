@@ -2,16 +2,17 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import {siteListRequest} from '../../service'
-import {Spin} from 'antd';
 import {HomeMenuControl} from '../../controls'
 import RealTimeDataCurve from './components/RealTimeDataCurve'
 import OverlayRealTimeDataCurve from './components/OverlayRealTimeDataCurve'
 import HistoryDataCurve from './components/HistoryDataCurve'
 import SitePopupItem from './components/SitePopupItem'
+import SitePopupItemType2 from './components/SitePopupItemType2'
 import HistoryRealTimeDataCurve from "./components/HistoryRealTimeDataCurve";
 
 
 import 'moment/locale/zh-cn';
+
 moment.locale('zh-cn');
 
 let ReactDom = require('react-dom')
@@ -26,14 +27,16 @@ class Page extends Component {
         sites: PropTypes.array.isRequired,
         dispatch: PropTypes.func.isRequired,
     }
-    constructor(props){
+
+    constructor(props) {
         super(props)
 
         this.state = {
             timeFlag: null,
         }
     }
-    getSiteData(){
+
+    getSiteData() {
         let self = this;
         clearTimeout(this.state.timeFlag);
         this.props.dispatch(siteListRequest({}));
@@ -45,13 +48,13 @@ class Page extends Component {
         })
     }
 
-    addPoint(sites){
-        if(isAddPornt) return;
+    addPoint(sites) {
+        if (isAddPornt) return;
         let {map} = this.mapbox;
         let features = [];
 
 
-        _.map(sites, (site) =>{
+        _.map(sites, (site) => {
             if (_.indexOf(this.props.disableIds, site.id) <= -1) {
                 let obj = {
                     "type": "Feature",
@@ -91,6 +94,7 @@ class Page extends Component {
         });
         isAddPornt = true;
     }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.sites) {
 
@@ -108,16 +112,29 @@ class Page extends Component {
 
             _.map(sites, (site) => {
                 if (_.indexOf(this.props.disableIds, site.id) <= -1) {
-                    let id = `site-${site.id}`,
-                        popup = new mapboxGl.Popup({closeOnClick: false, closeButton: false})
-                            .setLngLat([site.latitude, site.longitude])
-                            .setHTML(`<div style="width:150px" class="site-popup" id="${id}"></div>`)
-                            .addTo(map)
-                    this.popupList.push(popup);
-                    ReactDom.render(
-                        <SitePopupItem site={site}/>,
-                        document.getElementById(id)
-                    )
+                    if (site.type == 1) {
+                        let id = `site-${site.id}`,
+                            popup = new mapboxGl.Popup({closeOnClick: false, closeButton: false})
+                                .setLngLat([site.latitude, site.longitude])
+                                .setHTML(`<div style="width:150px" class="site-popup" id="${id}"></div>`)
+                                .addTo(map)
+                        this.popupList.push(popup);
+                        ReactDom.render(
+                            <SitePopupItem site={site}/>,
+                            document.getElementById(id)
+                        )
+                    } else if (site.type == 2) {
+                        let id = `site-${site.id}`,
+                            popup = new mapboxGl.Popup({closeOnClick: false, closeButton: false})
+                                .setLngLat([site.latitude, site.longitude])
+                                .setHTML(`<div style="width:150px" class="site-popup" id="${id}"></div>`)
+                                .addTo(map)
+                        this.popupList.push(popup);
+                        ReactDom.render(
+                            <SitePopupItemType2 site={site}/>,
+                            document.getElementById(id)
+                        )
+                    }
                 }
             })
             // }

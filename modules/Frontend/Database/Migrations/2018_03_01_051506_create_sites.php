@@ -19,6 +19,7 @@ class CreateSites extends Migration
             $table->float('longitude', 14, 12);
             $table->float('latitude', 15, 12);
             $table->integer('device_id');
+            $table->enum('type', [1, 2])->default(1);
             $table->timestamps();
         });
     }

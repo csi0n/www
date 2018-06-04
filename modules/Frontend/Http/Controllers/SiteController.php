@@ -26,8 +26,8 @@ class SiteController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      * Display a listing of the resource.
-     * @return Response
      */
     public function index()
     {

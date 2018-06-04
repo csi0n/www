@@ -10,18 +10,26 @@ namespace Modules\Frontend\Services;
 
 
 use Modules\Frontend\Repositories\CollectionDataRepository;
+use Modules\Frontend\Repositories\NewBuoyHisRepository;
+use Modules\Frontend\Repositories\NewBuoyRealRepository;
 
 class CollectionDataService
 {
     protected $collectionDataRepository;
+    protected $newBuoyHisRepository;
+    protected $newBuoRealRepository;
 
     /**
      * CollectionDataService constructor.
-     * @param $collectionDataRepository
+     * @param CollectionDataRepository $collectionDataRepository
+     * @param NewBuoyHisRepository $newBuoyHisRepository
+     * @param NewBuoyRealRepository $newBuoyRealRepository
      */
-    public function __construct(CollectionDataRepository $collectionDataRepository)
+    public function __construct(CollectionDataRepository $collectionDataRepository, NewBuoyHisRepository $newBuoyHisRepository, NewBuoyRealRepository $newBuoyRealRepository)
     {
         $this->collectionDataRepository = $collectionDataRepository;
+        $this->newBuoyHisRepository = $newBuoyHisRepository;
+        $this->newBuoRealRepository = $newBuoyRealRepository;
     }
 
     public function __call($name, $arguments)
@@ -33,8 +41,16 @@ class CollectionDataService
     {
         return $this->collectionDataRepository
             ->where('DeviceID', $deviceId)
-            ->orderBy('CollectionDateTime','desc')
+            ->orderBy('CollectionDateTime', 'desc')
             ->first();
     }
+
+    public function loadType2NewestCollectionDataByStationID($stationID)
+    {
+        return $this->newBuoRealRepository
+            ->where('StationID', $stationID)
+            ->first();
+    }
+
 
 }
